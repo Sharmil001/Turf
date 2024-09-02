@@ -1,9 +1,21 @@
 "use client";
-import LoginDescription from "@/_components/LoginDescription";
 import React, { useState } from "react";
 import RegisterForm from "./_component/RegisterForm";
+import axios from "axios";
+import { useRouter } from "next/navigation";
+import LoginDescription from "../_components/LoginDescription";
+import { Bounce, toast, ToastContainer } from "react-toastify";
+import { useToastApi } from "../_components/Notification";
+
+enum APISTATE {
+  PENDING = 0,
+  SUCCESS = 1,
+  ERROR = 2,
+}
 
 const RegisterPage = () => {
+  const router = useRouter();
+  const { toastPromise } = useToastApi();
   const [user, setUser] = useState({
     fullname: "",
     email: "",
@@ -11,9 +23,19 @@ const RegisterPage = () => {
     password: "",
   });
 
-  const handleSubmit = (event: React.FormEvent): void => {
+  const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
-    console.log("Login", user);
+
+    const registerApiCall = () => axios.post("/api/register", user);
+
+    try {
+      const response = await toastPromise(registerApiCall);
+      if (response.data.success) {
+        router.push("/login");
+      }
+    } catch (error: any) {
+      toast.error(error?.message || "An unexpected error occurred 🤯");
+    }
   };
 
   return (

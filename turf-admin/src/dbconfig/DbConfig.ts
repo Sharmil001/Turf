@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 
 const connect_url: string =
-  process.env.MONGODB_CONNECTION || "mongodb://127.0.0.1:27017/TurfDb";
+  process.env.MONGODB_CONNECTION || "mongodb://127.0.0.1:27017/turfdb";
 
 export async function connectDb() {
   try {

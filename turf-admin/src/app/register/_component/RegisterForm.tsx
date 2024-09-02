@@ -44,13 +44,14 @@ const RegisterForm = ({ setUser, user, handleSubmit }: any) => {
             Phone
           </label>
           <input
-            type="type"
+            type="number"
             name="fullname"
             className="mt-1 px-3 py-2 bg-white border shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-[#[#6D31ED]] focus:ring-[#[#6D31ED]] block w-full rounded-md sm:text-sm focus:ring-1 peer"
-            placeholder="+91 1234567890"
+            placeholder="1234567890"
             onChange={(event: any) =>
               setUser({ ...user, phone: event.target.value })
             }
+            maxLength={10}
             required
           />
         </div>

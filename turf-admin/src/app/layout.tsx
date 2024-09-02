@@ -1,7 +1,10 @@
 "use client";
 import { useEffect } from "react";
 import { useRouter, usePathname } from "next/navigation";
+import { ToastContainer } from "react-toastify";
 import { Inter } from "next/font/google";
+import 'react-datepicker/dist/react-datepicker.css';
+import 'react-toastify/dist/ReactToastify.css';
 import "./globals.css";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -18,18 +21,21 @@ const IsAuthenticated = (
       if (typeof window !== "undefined") {
         const token = localStorage.getItem("jwtToken");
 
-        const isTokenExpired = (token: string) => {
-          try {
-            const decoded: any = JSON.parse(atob(token.split(".")[1]));
-            const currentTime = Date.now() / 1000;
-            return decoded.exp < currentTime;
-          } catch (error) {
-            return true;
-          }
-        };
+        // const isTokenExpired = (token: string) => {
+        //   try {
+        //     const decoded: any = JSON.parse(atob(token.split(".")[1]));
+        //     const currentTime = Date.now() / 1000;
+        //     return decoded.exp < currentTime;
+        //   } catch (error) {
+        //     return true;
+        //   }
+        // };
 
         if (!publicRoutes.includes(pathname)) {
-          if (!token || isTokenExpired(token)) {
+          // if (!token || isTokenExpired(token)) {
+          //   router.push("/login");
+          // }
+          if (!token) {
             router.push("/login");
           }
         }
@@ -54,6 +60,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
+        <ToastContainer />
         <AuthenticatedComponent />
       </body>
     </html>
