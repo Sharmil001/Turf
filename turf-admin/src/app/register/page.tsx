@@ -5,7 +5,8 @@ import axios from "axios";
 import { useRouter } from "next/navigation";
 import LoginDescription from "../_components/LoginDescription";
 import { Bounce, toast, ToastContainer } from "react-toastify";
-import { useToastApi } from "../_components/Notification";
+import { useToastApi } from "../_components/ToastMessage";
+import axiosInstance from "@/helper/AxiosInterface";
 
 enum APISTATE {
   PENDING = 0,
@@ -26,7 +27,7 @@ const RegisterPage = () => {
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
 
-    const registerApiCall = () => axios.post("/api/register", user);
+    const registerApiCall = () => axiosInstance.post("/api/register", user);
 
     try {
       const response = await toastPromise(registerApiCall);

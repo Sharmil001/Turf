@@ -24,7 +24,7 @@ export async function POST(req: NextRequest) {
 
     const tokenObject = {
       _id: user._id,
-      fullName: user.fullName,
+      fullName: user.fullname,
       email: user.email,
     };
 

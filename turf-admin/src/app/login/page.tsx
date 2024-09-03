@@ -1,10 +1,10 @@
 "use client";
 import React, { useState } from "react";
 import LoginForm from "./_component/LoginForm";
-import axios from "axios";
 import LoginDescription from "../_components/LoginDescription";
-import { useToastApi } from "../_components/Notification";
+import { useToastApi } from "../_components/ToastMessage";
 import { useRouter } from "next/navigation";
+import axiosInstance from "@/helper/AxiosInterface";
 
 const LoginPage = () => {
   const { toastPromise } = useToastApi();
@@ -16,15 +16,13 @@ const LoginPage = () => {
 
   async function handleSubmit(event: React.FormEvent) {
     event.preventDefault();
-    const registerApiCall = () => axios.post(`/api/login`, user);
+    const registerApiCall = () => axiosInstance.post(`/api/login`, user);
     try {
       const response = await toastPromise(registerApiCall);
       if (response.data.success) {
-        console.log(response.data);
         const { jwtToken, tokenObject } = response?.data?.data;
-
-        console.log(jwtToken, tokenObject);
         localStorage.setItem("jwtToken", jwtToken);
+        localStorage.setItem('userDetails', JSON.stringify(tokenObject));
         router.push("/sportbooker/home");
       }
     } catch (error: any) {}

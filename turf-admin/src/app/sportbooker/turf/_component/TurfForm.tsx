@@ -2,9 +2,15 @@ import Link from "next/link";
 import React from "react";
 import Select from "react-select";
 import DatePicker from "react-datepicker";
-
+import { MultiSelect } from "react-multi-select-component";
 
 const TurfForm = ({ handleSubmit, setTurf, turf }: any) => {
+  const options = [
+    { label: "Cricket", value: "cricket" },
+    { label: "Football", value: "football" },
+    { label: "Badminton", value: "badminton" },
+  ];
+
   return (
     <form
       action="submit"
@@ -31,21 +37,17 @@ const TurfForm = ({ handleSubmit, setTurf, turf }: any) => {
         <label className="block text-sm font-semibold text-slate-700">
           Turf Type
         </label>
-        <select
-          name="turfType"
-          className="mt-1 px-3 py-2 bg-white border shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-[#6D31ED] focus:ring-[#6D31ED] block w-full rounded-md sm:text-sm focus:ring-1 peer"
-          onChange={(event: any) =>
-            setTurf({ ...turf, turfType: event.target.value })
-          }
-          required
-        >
-          <option value="">Select Turf Type</option>
-          <option value="football">Football</option>
-          <option value="cricket">Cricket</option>
-          <option value="badminton">Badminton</option>
-        </select>
+        <MultiSelect
+          className="mt-1 py-2 bg-white placeholder-slate-400 focus:outline-none focus:border-[#6D31ED] focus:ring-[#6D31ED] block w-full rounded-md sm:text-sm focus:ring-1 peer"
+          options={options}
+          value={turf.turfType}
+          onChange={(selected: any) => {
+            // const selectedValues = selected.map((option: any) => option.value);
+            setTurf({ ...turf, turfType: selected });
+          }}
+          labelledBy="Select"
+        />
       </div>
-
       <div className="flex gap-2">
         <div className="block w-1/2">
           <label className="block text-sm font-semibold text-slate-700">
@@ -92,7 +94,7 @@ const TurfForm = ({ handleSubmit, setTurf, turf }: any) => {
           className="mt-1 px-3 py-2 bg-white border shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-[#6D31ED] focus:ring-[#6D31ED] block w-full rounded-md sm:text-sm focus:ring-1 peer"
           placeholder="Input price per hour"
           onChange={(event) =>
-            setTurf({ ...turf, pricePerHour: event.target.value })
+            setTurf({ ...turf, turfPrice: event.target.value })
           }
           required
         />
@@ -109,7 +111,7 @@ const TurfForm = ({ handleSubmit, setTurf, turf }: any) => {
           className="mt-1 px-3 py-2 bg-white border shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-[#[#6D31ED]] focus:ring-[#[#6D31ED]] block w-full rounded-md sm:text-sm focus:ring-1"
           placeholder="Input turf address"
           onChange={(event: any) =>
-            setTurf({ ...turf, address: event.target.value })
+            setTurf({ ...turf, turfLocation: event.target.value })
           }
           required
         ></textarea>

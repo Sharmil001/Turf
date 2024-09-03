@@ -1,28 +1,45 @@
-import Image from "next/image";
-import Link from "next/link";
-import React from "react";
+"use client";
+
+import axiosInstance from "@/helper/AxiosInterface";
+import { useState, useEffect } from "react";
+import NotFound from "./_component/NotFound";
+import TufList from "./_component/TufList";
+import { toast } from "react-toastify";
+
+interface Dropdown {
+  label: string;
+  value: string;
+}
+
+export interface TurfDetails {
+  name: string;
+  turfType: Dropdown[];
+  turfLocation: string;
+  turfDescription: string;
+  turfPrice: number;
+  turfAvailability: boolean;
+}
 
 const HomePage = () => {
-  return (
-    <div className="min-h-[calc(100vh-96px)] flex flex-col justify-center items-center text-center gap-4">
-      <Image
-        src="/assets/images/turf-no-found.svg"
-        alt="turf-no-found.svg"
-        width={300}
-        height={300}
-      />
-      <div className="flex flex-col">
-        <h2 className="font-bold text-2xl">No turf added</h2>
-        <p>It looks like there are no turfs added yet.</p>
-      </div>
+  const [turfDetails, setTurfDetails] = useState<TurfDetails | null>(null);
 
-      <Link href="/sportbooker/turf/add">
-        <button className="bg-[#F5F1FE] text-[#6D31ED] py-2 px-6 font-semibold rounded-md">
-          Add Turf Details
-        </button>
-      </Link>
-    </div>
-  );
+  const getTufDetails = async () => {
+    try {
+      const response = await axiosInstance.get("/api/turf");
+      if (response.data.success) {
+        setTurfDetails(response.data.data);
+      }
+    } catch (error: any) {
+      console.error(error);
+      toast.error(error.message || "An unexpected error occurred 🤯");
+    }
+  };
+
+  useEffect(() => {
+    getTufDetails();
+  }, []);
+
+  return !turfDetails ? <NotFound /> : <TufList turfDetails={turfDetails} />;
 };
 
 export default HomePage;

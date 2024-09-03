@@ -7,6 +7,11 @@ import Avatar from "./Avatar";
 
 export default function Navbar() {
   const router = useRouter();
+  const userDetails: any = JSON.parse(
+    localStorage.getItem("userDetails") || ""
+  );
+
+  console.log(userDetails);
 
   const addTurfDetails = () => {
     router.push("/sportbooker/turf/add");
@@ -38,8 +43,7 @@ export default function Navbar() {
           </span>
           Add Your Turf
         </button>
-        <Avatar name="Sharmil" />
-        <FiMenu className="cursor-pointer" size={24} />
+        <Avatar userDetails={userDetails} />
       </div>
     </div>
   );
