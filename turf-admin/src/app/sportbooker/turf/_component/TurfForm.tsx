@@ -6,9 +6,9 @@ import { MultiSelect } from "react-multi-select-component";
 
 const TurfForm = ({ handleSubmit, setTurf, turf }: any) => {
   const options = [
-    { label: "Cricket", value: "cricket" },
-    { label: "Football", value: "football" },
-    { label: "Badminton", value: "badminton" },
+    { label: "🏏 Cricket", value: "cricket" },
+    { label: "⚽ Football", value: "football" },
+    { label: "🏸 Badminton", value: "badminton" },
   ];
 
   return (
@@ -29,6 +29,7 @@ const TurfForm = ({ handleSubmit, setTurf, turf }: any) => {
           onChange={(event: any) =>
             setTurf({ ...turf, name: event.target.value })
           }
+          value={turf.name}
           required
         />
       </div>
@@ -90,7 +91,7 @@ const TurfForm = ({ handleSubmit, setTurf, turf }: any) => {
         </label>
         <input
           type="number"
-          value={turf.pricePerHour}
+          value={turf.turfPrice}
           className="mt-1 px-3 py-2 bg-white border shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-[#6D31ED] focus:ring-[#6D31ED] block w-full rounded-md sm:text-sm focus:ring-1 peer"
           placeholder="Input price per hour"
           onChange={(event) =>
@@ -113,6 +114,7 @@ const TurfForm = ({ handleSubmit, setTurf, turf }: any) => {
           onChange={(event: any) =>
             setTurf({ ...turf, turfLocation: event.target.value })
           }
+          value={turf.turfLocation}
           required
         ></textarea>
       </div>

@@ -10,9 +10,25 @@ export async function GET(req: NextRequest) {
   if (middlewareResponse) {
     return middlewareResponse;
   }
+
   try {
-    const turf = await Turf.find({});
-    return NextResponse.json({ success: true, data: turf }, { status: 200 });
+    const url = new URL(req.url);
+    const id = url.searchParams.get("id");
+
+    // Find the turf by ID
+    if (id) {
+      const turf = await Turf.findById(id);
+
+      if (!turf) {
+        return NextResponse.json(
+          { success: false, error: "Turf not found" },
+          { status: 404 }
+        );
+      }
+      return NextResponse.json({ success: true, data: turf }, { status: 200 });
+    }
+    const turfs = await Turf.find({});
+    return NextResponse.json({ success: true, data: turfs }, { status: 200 });
   } catch (error: any) {
     return NextResponse.json(
       { success: false, error: error.message },
@@ -43,6 +59,7 @@ export async function POST(req: NextRequest) {
 }
 
 export async function PUT(req: NextRequest) {
+  await connectDb();
   const { searchParams } = new URL(req.url);
   const id = searchParams.get("id");
   const body = await req.json();
@@ -52,8 +69,6 @@ export async function PUT(req: NextRequest) {
     return middlewareResponse;
   }
 
-  await connectDb();
-
   try {
     const turf = await Turf.findByIdAndUpdate(id, body, {
       new: true,
@@ -61,14 +76,17 @@ export async function PUT(req: NextRequest) {
     });
     if (!turf) {
       return NextResponse.json(
-        { success: false, error: "Turf not found" },
+        { success: false, message: "Turf not found" },
         { status: 404 }
       );
     }
-    return NextResponse.json({ success: true, data: turf }, { status: 200 });
+    return NextResponse.json(
+      { success: true, data: turf, message: "Updated Successfully" },
+      { status: 200 }
+    );
   } catch (error: any) {
     return NextResponse.json(
-      { success: false, error: error.message },
+      { success: false, message: error.message },
       { status: 400 }
     );
   }
@@ -90,14 +108,21 @@ export async function DELETE(req: NextRequest) {
     const deletedTurf = await Turf.deleteOne({ _id: id });
     if (!deletedTurf.deletedCount) {
       return NextResponse.json(
-        { success: false, error: "Turf not found" },
+        { success: false, message: "Turf not found" },
         { status: 404 }
       );
     }
-    return NextResponse.json({ success: true, data: {} }, { status: 200 });
+    return NextResponse.json(
+      {
+        success: true,
+        data: { deletedTurf, _id: id },
+        message: "Deleted Successfully",
+      },
+      { status: 200 }
+    );
   } catch (error: any) {
     return NextResponse.json(
-      { success: false, error: error.message },
+      { success: false, message: error.message },
       { status: 400 }
     );
   }

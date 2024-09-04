@@ -8,7 +8,8 @@ const Avatar = ({ userDetails }: any) => {
   // const user = JSON.parse(userDetails);
 
   const initial = userDetails?.fullName
-    ? userDetails?.fullName.split(" ")[0].charAt(0).toUpperCase()
+    ? userDetails?.fullName.split(" ")[0].charAt(0).toUpperCase() +
+      userDetails?.fullName.split(" ")[1].charAt(0).toUpperCase()
     : "";
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef: any = useRef(null);
@@ -45,10 +46,12 @@ const Avatar = ({ userDetails }: any) => {
   return (
     <div className="relative inline-block text-left" ref={dropdownRef}>
       <div
-        className="flex items-center justify-center w-12 h-12 rounded-full bg-blue-500 text-white text-xl font-bold cursor-pointer"
+        className="flex items-center justify-center w-12 h-12 rounded-full border-2 border-sky-500 cursor-pointer"
         onClick={toggleDropdown}
       >
-        {initial}
+        <div className="flex items-center justify-center w-10 h-10 rounded-full bg-blue-500 text-white text-md font-bold">
+          {initial}
+        </div>
       </div>
 
       {isOpen && (

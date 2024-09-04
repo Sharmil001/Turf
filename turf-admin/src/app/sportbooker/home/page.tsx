@@ -5,6 +5,7 @@ import { useState, useEffect } from "react";
 import NotFound from "./_component/NotFound";
 import TufList from "./_component/TufList";
 import { toast } from "react-toastify";
+import { useToastApi } from "@/app/_components/ToastMessage";
 
 interface Dropdown {
   label: string;
@@ -12,6 +13,7 @@ interface Dropdown {
 }
 
 export interface TurfDetails {
+  _id: string;
   name: string;
   turfType: Dropdown[];
   turfLocation: string;
@@ -21,7 +23,8 @@ export interface TurfDetails {
 }
 
 const HomePage = () => {
-  const [turfDetails, setTurfDetails] = useState<TurfDetails | null>(null);
+  const { toastPromise } = useToastApi();
+  const [turfDetails, setTurfDetails] = useState<TurfDetails[] | []>([]);
 
   const getTufDetails = async () => {
     try {
@@ -39,7 +42,27 @@ const HomePage = () => {
     getTufDetails();
   }, []);
 
-  return !turfDetails ? <NotFound /> : <TufList turfDetails={turfDetails} />;
+  const deleteTurf = async (turf: TurfDetails) => {
+    const delteTurfApiCall = () =>
+      axiosInstance.delete(`/api/turf?id=${turf._id}`);
+
+    try {
+      const response = await toastPromise(delteTurfApiCall);
+      if (response.data.success) {
+        setTurfDetails(
+          turfDetails?.filter((t) => t._id !== response.data.data._id)
+        );
+      }
+    } catch (error: any) {
+      toast.error(error.message || "An unexpected error occurred 🤯");
+    }
+  };
+
+  return turfDetails && turfDetails.length == 0 ? (
+    <NotFound />
+  ) : (
+    <TufList turfDetails={turfDetails} deleteTurf={deleteTurf} />
+  );
 };
 
 export default HomePage;

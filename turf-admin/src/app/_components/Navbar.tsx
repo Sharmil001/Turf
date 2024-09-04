@@ -11,8 +11,6 @@ export default function Navbar() {
     localStorage.getItem("userDetails") || ""
   );
 
-  console.log(userDetails);
-
   const addTurfDetails = () => {
     router.push("/sportbooker/turf/add");
   };
@@ -33,7 +31,7 @@ export default function Navbar() {
         />
       </div>
       <div className="nav-items flex items-center justify-between gap-4">
-        <FiBell className="cursor-pointer" size={24} />
+        {/* <FiBell className="cursor-pointer" size={24} /> */}
         <button
           className="flex items-center gap-2 px-4 py-2 border-2 border-[#6D31ED] rounded-full bg-transparent text-[#6D31ED] font-semibold"
           onClick={addTurfDetails}

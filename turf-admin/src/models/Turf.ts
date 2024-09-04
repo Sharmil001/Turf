@@ -14,7 +14,7 @@ const TurfSchema = new mongoose.Schema(
     turfAvailability: { type: Boolean, default: true },
     closeTime: { type: Date, required: true },
     openTime: { type: Date, required: true },
-    // image: { type: String },
+    image: { type: String, required: true },
     // description: { type: String },
     // owner: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
     createdAt: { type: Date, required: true, default: new Date() },
